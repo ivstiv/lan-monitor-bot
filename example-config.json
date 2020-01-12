@@ -3,6 +3,6 @@
 	"prefix": "+",
 	"channelID": "ADD CHANNEL ID TO DISPLAY THE MESSAGE",
 	"utcOffset": 0,
-	"updatePeriod": 1,
-	"savePeriod": 5  
+	"updatePeriod": 30,
+	"savePeriod": 300  
 }

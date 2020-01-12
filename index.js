@@ -123,14 +123,15 @@ function printTable() {
 
 	let channel = client.channels.get(config.channelID);
 	let time = moment().utcOffset(config.utcOffset).format('MM/DD HH:mm');
+	let footer = `\nLast updated: ${time} | Update rate: ${config.updatePeriod}s`;
 	if(!lastMessageID) {
-		channel.send("```\n"+`${table.toString()}`+"\nLast updated: "+time+"```")
+		channel.send("```\n"+`${table.toString()}`+footer+"```")
 			.then(msg => lastMessageID = msg.id);
 	}else{
 		client.channels.get(config.channelID)
 			.fetchMessage(lastMessageID)
 				.then((message) => {
-					message.edit("```\n"+`${table.toString()}`+"\nLast updated: "+time+"```");
+					message.edit("```\n"+`${table.toString()}`+footer+"```");
 				});
 	}
 }
