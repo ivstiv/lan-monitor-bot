@@ -1,0 +1,8 @@
+{
+	"token": "EDIT THIS",
+	"prefix": "+",
+	"channel-id": "ADD CHANNEL ID TO DISPLAY THE MESSAGE",
+	"subnet": "192.168.1.0/24",
+	"update-period": 1,
+	"save-period": 5  
+}
