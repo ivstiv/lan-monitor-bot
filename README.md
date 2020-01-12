@@ -17,15 +17,15 @@ This a lightweight discord bot that can be, for example ran on a RaspberryPI to 
 The commands use the default prefix "+". 
 
 * +help | Shows all commands with descriptions.
-* +label add <mac address> <label> | Adds a label to a device.
-* +label remove <mac address> | Removes a label from a device.
-* +device remove <mac address> | Removes a device 
+* +label add `<mac address> <label>` | Adds a label to a device.
+* +label remove `<mac address>` | Removes a label from a device.
+* +device remove `<mac address>` | Removes a device 
 from the list.
 
 In development: 
 
-* +notify online <mac address> | Sends a message every time the device comes online.
-* +notify offline <mac address> | Sends a message every time the device goes offline.
+* +notify online `<mac address>` | Sends a message every time the device comes online.
+* +notify offline `<mac address>` | Sends a message every time the device goes offline.
 
 ## Setup a bot
 1. [Here](https://www.digitaltrends.com/gaming/how-to-make-a-discord-bot/) is a tutorial on how to do that.
