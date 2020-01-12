@@ -37,15 +37,19 @@ Invitation link(populate CLIENT_ID and PERMISSIONS_ID):
 1. Make sure you have Node JS installed!
 
 2. Clone the repository. 
-3. Create a config file.
+
+3. Install the bot
+
+	npm install
+4. Create a config file.
 
     cp example-config.json config.json 
-4. Edit the config with your own bot token and channel id. You can find more info on how to find them [here](https://github.com/Chikachi/DiscordIntegration/wiki/How-to-get-a-token-and-channel-ID-for-Discord).
+5. Edit the config with your own bot token and channel id. You can find more info on how to find them [here](https://github.com/Chikachi/DiscordIntegration/wiki/How-to-get-a-token-and-channel-ID-for-Discord).
 
-5. Start the bot. 
+6. Start the bot. 
 
     node index
-6. You can use tmux, screen, systemd or npm's package "forever" to hold the bot working on the background.
+7. You can use tmux, screen, systemd or npm's package "forever" to hold the bot working on the background.
 
 ## Tips
 
