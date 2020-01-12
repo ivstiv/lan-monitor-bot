@@ -1,5 +1,5 @@
 const config = require('./config.json');
-const {devices} = require('./Storage.js');
+const {devices, saveDevices, loadDevices, log} = require('./Storage.js');
 const Discord = require("discord.js");
 const fs = require('fs');
 const find = require('local-devices');
@@ -19,14 +19,16 @@ for (const file of commandFiles)  {
 }
 
 client.on("ready", () => {
-	console.log('Bot is running. . .');
+	log('Bot is running. . .');
 
 	let channel = client.channels.get(config.channelID);
 	channel.bulkDelete(100);
-		
+
+	loadDevices();
 	refreshDevices();
+
 	setInterval(refreshDevices, config.updatePeriod*1000);
-	//setInterval(saveData, config.savePeriod*60*100);
+	setInterval(saveDevices, config.savePeriod*1000);
 });
 
 
