@@ -16,16 +16,16 @@ This a lightweight discord bot that can be, for example ran on a RaspberryPI to 
 ## Commands
 The commands use the default prefix "+". 
 
-* +help | Shows all commands with descriptions.
-* +label add `<mac address> <label>` | Adds a label to a device.
-* +label remove `<mac address>` | Removes a label from a device.
-* +device remove `<mac address>` | Removes a device 
-from the list.
+* `+help | Shows all commands with descriptions.`
+* `+label add <mac address> <label> | Adds a label to a device.`
+* `+label remove <mac address> | Removes a label from a device.`
+* `+device remove <mac address> | Removes a device 
+from the list.`
 
 In development: 
 
-* +notify online `<mac address>` | Sends a message every time the device comes online.
-* +notify offline `<mac address>` | Sends a message every time the device goes offline.
+* `+notify online <mac address> | Sends a message every time the device comes online.`
+* `+notify offline <mac address> | Sends a message every time the device goes offline.`
 
 ## Setup a bot
 1. [Here](https://www.digitaltrends.com/gaming/how-to-make-a-discord-bot/) is a tutorial on how to do that.
@@ -40,15 +40,15 @@ Invitation link(populate CLIENT_ID and PERMISSIONS_ID):
 
 3. Install the bot
 
-	npm install
+	`npm install`
 4. Create a config file.
 
-    cp example-config.json config.json 
+    `cp example-config.json config.json`
 5. Edit the config with your own bot token and channel id. You can find more info on how to find them [here](https://github.com/Chikachi/DiscordIntegration/wiki/How-to-get-a-token-and-channel-ID-for-Discord).
 
 6. Start the bot. 
 
-    node index
+    `node index`
 7. You can use tmux, screen, systemd or npm's package "forever" to hold the bot working on the background.
 
 ## Tips
