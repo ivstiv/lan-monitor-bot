@@ -11,7 +11,7 @@ This a lightweight discord bot that can be, for example ran on a RaspberryPI to 
 * (In development) Custom HTTP request calls to endpoints when a device goes online/offline. (Could be used to automate IoT devices)
 
 ## Pictures
-
+![Picture](https://github.com/Ivstiv/lan-monitor-bot/blob/master/pic.png)
 
 ## Commands
 The commands use the default prefix "+". 
@@ -30,8 +30,8 @@ In development:
 ## Setup a bot
 1. [Here](https://www.digitaltrends.com/gaming/how-to-make-a-discord-bot/) is a tutorial on how to do that.
 
-Invitation link(populate CLIENT ID and PERMISSIONS ID):
->https://discordapp.com/oauth2/authorize?&client_id=<CLIENT ID>&scope=bot&permissions=<PERMISSIONS ID>
+Invitation link(populate CLIENT_ID and PERMISSIONS_ID):
+>https://discordapp.com/oauth2/authorize?&client_id=CLIENT_ID&scope=bot&permissions=PERMISSIONS_ID
 
 ## Installation
 1. Make sure you have Node JS installed!
