@@ -24,7 +24,14 @@ client.on("ready", () => {
 	let channel = client.channels.get(config.channelID);
 	channel.bulkDelete(100);
 
-	loadDevices();
+	try {
+	  if(fs.existsSync('devices.json')) {
+	    loadDevices();
+	  }
+	}catch(err) {
+	  log(err);
+	}
+	
 	refreshDevices();
 
 	setInterval(refreshDevices, config.updatePeriod*1000);

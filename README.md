@@ -40,7 +40,7 @@ Invitation link(populate CLIENT ID and PERMISSIONS ID):
 3. Create a config file.
 
     cp example-config.json config.json 
-4. Edit the config with your own bot token and channel id. You can find more info on how to find them [here] (https://github.com/Chikachi/DiscordIntegration/wiki/How-to-get-a-token-and-channel-ID-for-Discord).
+4. Edit the config with your own bot token and channel id. You can find more info on how to find them [here](https://github.com/Chikachi/DiscordIntegration/wiki/How-to-get-a-token-and-channel-ID-for-Discord).
 
 5. Start the bot. 
 
