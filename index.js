@@ -119,26 +119,21 @@ function addDevice(device) {
 
 function printTable() {
 
-	let sorted = new Map(Array.from(devices.entries()).sort((a, b) => {
-		if (a.lastSeen > b.lastSeen) return 1;
-  		if (b.lastSeen > a.lastSeen) return -1;
-  		return 0;
-	}));
+	// sort the devices by lastSeen timestamp
+	let sorted = Array.from(devices.entries());
+	sorted.sort((a,b) => {
+		if (a[1].lastSeen < b[1].lastSeen)  return 1;
+		if (b[1].lastSeen < a[1].lastSeen) return -1;
+		return 0;
+	});
 
 	let table = new AsciiTable();
 	table.setHeading('Device', 'IP', 'MAC', 'Label', 'Status');
 	// populate the table
-	for(let [mac, device] of sorted) {
-		table.addRow(device.name, device.ip, mac, device.label, device.status);
-	}
-	/*	
-	table.sortColumn(4, function(a, b) {
-  		if(a == 'Online')
-  			return -1;
-  		else 
-  			return 1;  		
-	});
-	*/
+	sorted.forEach(device => {
+		table.addRow(device[1].name, device[1].ip, device[1].mac, device[1].label, device[1].status);
+	})
+	
 	let channel = client.channels.get(config.channelID);
 	let time = moment().utcOffset(config.utcOffset).format('MM/DD HH:mm');
 	let footer = `\nLast updated: ${time} | Update rate: ${config.updatePeriod}s`;
