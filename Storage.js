@@ -20,6 +20,7 @@ module.exports = {
 				mac: device.mac,
 				label: device.label,
 				status: device.status,
+				lastSeen: device.lastSeen,
 			});
 		}
 		
@@ -46,6 +47,7 @@ module.exports = {
 							mac: device.mac,
 							label: device.label,
 							status: device.status,
+							lastSeen: device.lastSeen
 						}
 				);	
 			});
