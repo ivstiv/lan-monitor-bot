@@ -51,6 +51,8 @@ Invitation link(populate CLIENT_ID and PERMISSIONS_ID):
     `node index`
 7. You can use tmux, screen, systemd or npm's package "forever" to hold the bot working on the background.
 
+8. Deamonizing with Systemd: There is a template file of a systemd service that you can use in the repository under the name `lanbot-example.service`. Just substitue the information in <> with the corresponding directories and add the file in `/lib/systemd/system`. After that you can simply enable it and start it with `systemctl enable --now lanbot`.   
+
 ## Tips
 
 If you get "?" in the names column this is because you are either running the bot on Windows or the DNS server that you are using is an external one and not the default gateway so there is no way to resolve the names. 

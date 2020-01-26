@@ -1,0 +1,15 @@
+[Unit]
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+User=pi
+WorkingDirectory=<FULL PATH TO THE BOT'S DIRECTORY>
+LimitNOFILE=4096
+PIDFile=/run/lan-bot/bot.pid
+ExecStart=<NODE DIRECTORY> <FULL PATH TO BOT'S INDEX FILE>
+Restart=on-failure
+StartLimitInterval=600
+
+[Install]
+WantedBy=multi-user.target
