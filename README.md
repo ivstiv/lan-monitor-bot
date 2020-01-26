@@ -1,6 +1,6 @@
 # lan-monitor-bot
 
-This a lightweight discord bot that can be, for example ran on a RaspberryPI to monitor your network and notify you of events through Discord. The bot uses the Address Resolution Protocol (ARP) to discover local devices. Of course you can run it on your computer if you wish to. I am planning to create triggers so that the bot can be linked with other IoT devices to easily automate stuff around the house such as triggering cameras, sensors etc. 
+This a lightweight discord bot that can be, for example ran on a RaspberryPI to monitor your network and notify you of events through Discord. The bot uses the Address Resolution Protocol (ARP) to discover local devices. Of course you can run it on your computer if you wish to. I am planning to create triggers so that the bot can be linked with other IoT devices to easily automate stuff around the house such as triggering cameras, sensors etc. If you have any issues or need help setting it up try finding me in this discord server: https://discord.gg/jEghKHq
 
 ## Features
 * Monitors devices on your network from discord.
@@ -19,8 +19,7 @@ The commands use the default prefix "+".
 * `+help | Shows all commands with descriptions.`
 * `+label add <mac address> <label> | Adds a label to a device.`
 * `+label remove <mac address> | Removes a label from a device.`
-* `+device remove <mac address> | Removes a device 
-from the list.`
+* `+device remove <mac address> | Removes a device from the list.`
 
 In development: 
 
