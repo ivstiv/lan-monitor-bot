@@ -84,10 +84,10 @@ client.on('message', message => {
 
 function refreshDevices() {
 	find().then(onlineDevices => {
-		// reset the status
+		// reset the status to last seen for all
 		for(let [mac, device] of devices) {
 			if(device.status === 'Online') {
-				let time = moment().utcOffset(config.utcOffset).format('MM/DD HH:mm');
+				let time = moment(device.lastSeen).utcOffset(config.utcOffset).format('MM/DD HH:mm');
 				device.status = `Last seen ${time}`;
 			}
 		}
@@ -97,8 +97,9 @@ function refreshDevices() {
 			if(!devices.has(onlineDevice.mac)) {
 				addDevice(onlineDevice);
 			}
-			// update the status
+			// update the status to online
 			devices.get(onlineDevice.mac).status = 'Online';
+			devices.get(onlineDevice.mac).lastSeen = moment().valueOf();
 		});
 
 		printTable();
@@ -111,25 +112,33 @@ function addDevice(device) {
 		ip: device.ip,
 		mac: device.mac,
 		label: 'Unlabeled',
-		status: 'Online'
+		status: 'Online',
+		lastSeen: moment().valueOf(),
 	});
 }
 
 function printTable() {
+
+	let sorted = new Map(Array.from(devices.entries()).sort((a, b) => {
+		if (a.lastSeen > b.lastSeen) return 1;
+  		if (b.lastSeen > a.lastSeen) return -1;
+  		return 0;
+	}));
+
 	let table = new AsciiTable();
 	table.setHeading('Device', 'IP', 'MAC', 'Label', 'Status');
 	// populate the table
-	for(let [mac, device] of devices) {
+	for(let [mac, device] of sorted) {
 		table.addRow(device.name, device.ip, mac, device.label, device.status);
 	}
-		
+	/*	
 	table.sortColumn(4, function(a, b) {
   		if(a == 'Online')
   			return -1;
   		else 
   			return 1;  		
 	});
-
+	*/
 	let channel = client.channels.get(config.channelID);
 	let time = moment().utcOffset(config.utcOffset).format('MM/DD HH:mm');
 	let footer = `\nLast updated: ${time} | Update rate: ${config.updatePeriod}s`;
