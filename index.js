@@ -21,8 +21,8 @@ for (const file of commandFiles)  {
 client.on("ready", () => {
 	log('Bot is running. . .');
 
-	let channel = client.channels.get(config.channelID);
-	channel.bulkDelete(100);
+	//let channel = client.channels.get(config.channelID);
+	//channel.bulkDelete(100);
 
 	try {
 	  if(fs.existsSync('devices.json')) {
@@ -130,23 +130,71 @@ function printTable() {
 	let table = new AsciiTable();
 	table.setHeading('Device', 'IP', 'MAC', 'Label', 'Status');
 	// populate the table
+	// TO-DO write a for loop with numerical index to iterate from argument currentPage 
 	sorted.forEach(device => {
 		table.addRow(device[1].name, device[1].ip, device[1].mac, device[1].label, device[1].status);
 	})
 	
-	let channel = client.channels.get(config.channelID);
+	let channel = client.channels.cache.get(config.channelID);
 	let time = moment().utcOffset(config.utcOffset).format('MM/DD HH:mm');
 	let footer = `\nLast updated: ${time} | Update rate: ${config.updatePeriod}s`;
 	if(!lastMessageID) {
 		channel.send("```\n"+`${table.toString()}`+footer+"```")
-			.then(msg => lastMessageID = msg.id);
+			.then(msg => {
+				lastMessageID = msg.id
+				addPaginationControls(msg)
+			});
 	}else{
-		client.channels.get(config.channelID)
-			.fetchMessage(lastMessageID)
+		client.channels.cache.get(config.channelID).messages
+			.fetch(lastMessageID)
 				.then((message) => {
 					message.edit("```\n"+`${table.toString()}`+footer+"```");
 				});
 	}
+}
+
+function addPaginationControls(msg) {
+	msg.react('⬅️')
+		.then(() => msg.react('➡️'))
+		.then(() => msg.react('1️⃣'))
+		.catch(() => console.error('[ERROR]One of the pagination controls failed to react.'));
+
+	const filter = (reaction, user) => {
+		return ['⬅️', '➡️'].includes(reaction.emoji.name) && user.id !== msg.author.id;
+	};
+
+	const collector = msg.createReactionCollector(filter);
+	let currentPage = 1;
+	let maxPage = 5;
+
+	let reactionNumbers = ['1️⃣', '2️⃣', '3️⃣', '4️⃣', '5️⃣'];
+
+	collector.on('collect', (reaction, user) => {
+		if (reaction.emoji.name === '⬅️') {
+			if(currentPage > 1) {
+				currentPage--
+			}
+		} else if (reaction.emoji.name === '➡️') {
+			if(currentPage < maxPage) {
+				currentPage++
+			}
+		}
+
+		if (reaction.count > 1) {
+			reaction.users.remove(user.id);
+		}
+
+		reactionNumbers.forEach(el => {
+			reactionToRemove = msg.reactions.cache.get(el)
+			if (reactionToRemove)
+				reactionToRemove.remove().catch(error => console.error('Failed to remove reactions: ', error));
+		})
+		
+		msg.react(reactionNumbers[currentPage-1])
+			.catch(() => console.error('[ERROR]One of the pagination controls failed to react.'));
+
+		console.log("Showing page:"+currentPage)
+	})
 }
 
 client.login(config.token);
