@@ -95,6 +95,9 @@ function refreshDevices() {
 			// add a device if it is new
 			if(!devices.has(onlineDevice.mac)) {
 				addDevice(onlineDevice);
+				let channel = client.channels.cache.get(config.channelID);
+				let time = moment().utcOffset(config.utcOffset).format('MM/DD HH:mm');
+				channel.send(`[${time}] A new device joined the network: ${onlineDevice.name}`);
 			}
 			// update the status to online
 			devices.get(onlineDevice.mac).status = 'Online';
