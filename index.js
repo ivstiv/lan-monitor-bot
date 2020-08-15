@@ -102,6 +102,10 @@ function refreshDevices() {
 			// update the status to online
 			devices.get(onlineDevice.mac).status = 'Online';
 			devices.get(onlineDevice.mac).lastSeen = moment().valueOf();
+
+			// update if ip or name has changed
+			devices.get(onlineDevice.mac).ip = onlineDevice.ip;
+			devices.get(onlineDevice.mac).name = onlineDevice.name;
 		});
 
 		printTable(currentPage, PAGE_SIZE);
@@ -124,8 +128,18 @@ function printTable(page, pageSize) {
 	// sort the devices by lastSeen timestamp
 	let sorted = Array.from(devices.entries());
 	sorted.sort((a,b) => {
-		if (a[1].lastSeen < b[1].lastSeen)  return 1;
+		if (a[1].lastSeen < b[1].lastSeen) return 1;
 		if (b[1].lastSeen < a[1].lastSeen) return -1;
+		return 0;
+	});
+
+	// sort the online devices by mac also to prevent reordering
+	sorted.sort((a,b) => {
+		if (a[1].status == 'Online' && b[1].status == 'Online') {
+			 if (a[1].label < b[1].label) return 1;
+			 if (a[1].label > b[1].label) return -1;
+			 return 0;
+		}
 		return 0;
 	});
 
