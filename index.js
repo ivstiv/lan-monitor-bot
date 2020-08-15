@@ -133,16 +133,6 @@ function printTable(page, pageSize) {
 		return 0;
 	});
 
-	// sort the online devices by mac also to prevent reordering
-	sorted.sort((a,b) => {
-		if (a[1].status == 'Online' && b[1].status == 'Online') {
-			 if (a[1].label < b[1].label) return 1;
-			 if (a[1].label > b[1].label) return -1;
-			 return 0;
-		}
-		return 0;
-	});
-
 	let table = new AsciiTable();
 	table.setHeading('Device', 'IP', 'MAC', 'Label', 'Status');
 
