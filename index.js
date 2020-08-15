@@ -7,6 +7,8 @@ const AsciiTable = require('ascii-table');
 const moment = require('moment');
 const client = new Discord.Client();
 
+const PAGE_SIZE = 10;
+let currentPage = 1;
 let lastMessageID = null;
 
 client.commands = new Discord.Collection();
@@ -20,9 +22,6 @@ for (const file of commandFiles)  {
 
 client.on("ready", () => {
 	log('Bot is running. . .');
-
-	//let channel = client.channels.get(config.channelID);
-	//channel.bulkDelete(100);
 
 	try {
 	  if(fs.existsSync('devices.json')) {
@@ -61,22 +60,22 @@ client.on('message', message => {
 		
 		// reprint the table to be "pinned" to the bottom
 		if(lastMessageID) {
-			message.channel.fetchMessage(lastMessageID)
+			message.channel.messages.fetch(lastMessageID)
 			.then(msg => {
 				msg.delete();
 				lastMessageID = null;
-				printTable();
+				printTable(currentPage, PAGE_SIZE);
 			});
 		}
 	}else{
 		message.channel.send(`Type ${config.prefix}help to check available commands.`);
 		// reprint the table to be "pinned" to the bottom
 		if(lastMessageID) {
-			message.channel.fetchMessage(lastMessageID)
+			message.channel.messages.fetch(lastMessageID)
 			.then(msg => {
 				msg.delete();
 				lastMessageID = null;
-				printTable();
+				printTable(currentPage, PAGE_SIZE);
 			});
 		}
 	}
@@ -102,7 +101,7 @@ function refreshDevices() {
 			devices.get(onlineDevice.mac).lastSeen = moment().valueOf();
 		});
 
-		printTable();
+		printTable(currentPage, PAGE_SIZE);
 	});
 }
 
@@ -117,7 +116,7 @@ function addDevice(device) {
 	});
 }
 
-function printTable() {
+function printTable(page, pageSize) {
 
 	// sort the devices by lastSeen timestamp
 	let sorted = Array.from(devices.entries());
@@ -129,15 +128,19 @@ function printTable() {
 
 	let table = new AsciiTable();
 	table.setHeading('Device', 'IP', 'MAC', 'Label', 'Status');
+
 	// populate the table
-	// TO-DO write a for loop with numerical index to iterate from argument currentPage 
-	sorted.forEach(device => {
-		table.addRow(device[1].name, device[1].ip, device[1].mac, device[1].label, device[1].status);
-	})
+	for(let i = (page-1)*pageSize; i < sorted.length && i < page*pageSize; i++) {
+		table.addRow(sorted[i][1].name, sorted[i][1].ip, sorted[i][1].mac, sorted[i][1].label, sorted[i][1].status);
+	}
+
+	if (table.getRows.length === 0) {
+		table.addRow('', '', '', '', '');
+	}
 	
 	let channel = client.channels.cache.get(config.channelID);
 	let time = moment().utcOffset(config.utcOffset).format('MM/DD HH:mm');
-	let footer = `\nLast updated: ${time} | Update rate: ${config.updatePeriod}s`;
+	let footer = `\nPage: ${page} | Last updated: ${time} | Update rate: ${config.updatePeriod}s`;
 	if(!lastMessageID) {
 		channel.send("```\n"+`${table.toString()}`+footer+"```")
 			.then(msg => {
@@ -156,7 +159,6 @@ function printTable() {
 function addPaginationControls(msg) {
 	msg.react('⬅️')
 		.then(() => msg.react('➡️'))
-		.then(() => msg.react('1️⃣'))
 		.catch(() => console.error('[ERROR]One of the pagination controls failed to react.'));
 
 	const filter = (reaction, user) => {
@@ -164,12 +166,12 @@ function addPaginationControls(msg) {
 	};
 
 	const collector = msg.createReactionCollector(filter);
-	let currentPage = 1;
 	let maxPage = 5;
 
-	let reactionNumbers = ['1️⃣', '2️⃣', '3️⃣', '4️⃣', '5️⃣'];
-
 	collector.on('collect', (reaction, user) => {
+
+		let prevPage = currentPage;
+
 		if (reaction.emoji.name === '⬅️') {
 			if(currentPage > 1) {
 				currentPage--
@@ -184,15 +186,9 @@ function addPaginationControls(msg) {
 			reaction.users.remove(user.id);
 		}
 
-		reactionNumbers.forEach(el => {
-			reactionToRemove = msg.reactions.cache.get(el)
-			if (reactionToRemove)
-				reactionToRemove.remove().catch(error => console.error('Failed to remove reactions: ', error));
-		})
-		
-		msg.react(reactionNumbers[currentPage-1])
-			.catch(() => console.error('[ERROR]One of the pagination controls failed to react.'));
-
+		// save on bandwidth and spamming the buttons
+		if (prevPage !== currentPage)
+			printTable(currentPage, PAGE_SIZE);
 		console.log("Showing page:"+currentPage)
 	})
 }

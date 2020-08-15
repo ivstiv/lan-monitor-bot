@@ -5,7 +5,7 @@ module.exports = {
 	name: 'help',
 	description: 'Shows available commands.',
 	execute(message, args) {
-		const helpEmbed = new Discord.RichEmbed()
+		const helpEmbed = new Discord.MessageEmbed()
 				.setColor('#0099ff')
 				.setTitle('Commands:')
 				.addField(`**${config.prefix}help**`, '**Shows this menu.**')
