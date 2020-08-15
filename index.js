@@ -166,7 +166,7 @@ function addPaginationControls(msg) {
 	};
 
 	const collector = msg.createReactionCollector(filter);
-	let maxPage = 5;
+	let maxPage = 10;
 
 	collector.on('collect', (reaction, user) => {
 
