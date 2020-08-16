@@ -141,7 +141,7 @@ function printTable(page, pageSize) {
 		table.addRow(sorted[i][1].name, sorted[i][1].ip, sorted[i][1].mac, sorted[i][1].label, sorted[i][1].status);
 	}
 
-	if (table.getRows.length === 0) {
+	if (table.getRows().length === 0) {
 		table.addRow('', '', '', '', '');
 	}
 	
