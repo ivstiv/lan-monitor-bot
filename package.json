@@ -12,6 +12,6 @@
     "ascii-table": "0.0.9",
     "discord.js": "^12.2.0",
     "local-devices": "^3.0.0",
-    "moment": "^2.24.0"
+    "moment": "^2.29.2"
   }
 }
